@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container" th:fragment="partner-edit-form">
+
+    <!--/*@thymesVar id="partner" type="com.yurets_y.utl2planchart.entities.Partner"*/-->
+    <form class="form" th:action="@{/partners/add-partner}"  th:object="${partner}"method="post">
+        <!--CSRF protection-->
+        <input
+                type="hidden"
+                th:username="${_csrf.parameterName}"
+                th:value="${_csrf.token}"/>
+        <div class="form-group row">
+            <label for="shortName" class="col-sm-3 col-form-label">Название (Аббревиатура)</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('shortCompanyName')}? 'is-invalid'"
+                       id="shortName" th:field="*{shortCompanyName}">
+                <div class="invalid-feedback" th:errors="*{shortCompanyName}">????</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="fullName" class="col-sm-3 col-form-label">Полное наименование контрагента</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('fullCompanyName')}? 'is-invalid'"
+                       id="fullName" th:field="*{fullCompanyName}">
+                <div class="invalid-feedback" th:errors="*{fullCompanyName}">????</div>
+            </div>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Зарегистрировать контрагента</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

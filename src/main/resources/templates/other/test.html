@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head"> </head>
+
+
+<body>
+
+<header th:replace="layout :: site-header" />
+
+<div class="container ml-2 my-3">
+
+    <form class="form" th:action="@{/test-request}"  method="post">
+        <!--CSRF protection-->
+        <input
+                type="hidden"
+                th:username="${_csrf.parameterName}"
+                th:value="${_csrf.token}"/>
+
+
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+
+    </form>
+
+
+</div>
+
+
+<header th:replace="layout :: site-footer" />
+
+</body>
+</html>

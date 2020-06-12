@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <!--<link rel="stylesheet" href=/static/css/style.css th:href="@{/static/css/style.css}"/>-->
+
+</head>
+<body>
+
+    <header th:replace="layout :: site-header" />
+
+    <h1>Список пользователей</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Пользователь</th>
+            <th>Роль</th>
+            <th>Редактировать</th>
+        </tr>
+        </thead>
+
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.username}"></td>
+            <td>
+                <ul>
+                    <li th:each="role : ${user.roles}">
+                        <label th:text="${role}">ROLE_USER</label>
+                    </li>
+                </ul>
+            </td>
+            <td><a th:href="@{/users/edit/{id}/(id=${user.id})}" th:text="редактировать"></a> </td>
+
+        </tr>
+    </table>
+
+
+
+    <header th:replace="layout :: site-footer" />
+
+</body>
+</html>

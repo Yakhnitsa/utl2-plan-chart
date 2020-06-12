@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <!--<link rel="stylesheet" href=/static/css/style.css th:href="@{/static/css/style.css}"/>-->
+
+</head>
+<body>
+
+    <header th:replace="layout :: site-header" />
+
+    <h4>Создание новой заявки</h4>
+    <!--/*@thymesVar id="orderForm" type="com.yurets_y.utl2planchart.entities.OrderForm"*/-->
+    <form th:action="@{/createOrder}" th:object="${orderForm}" method="post">
+        <!--CSRF protection-->
+        <input
+                type="hidden"
+                th:username="${_csrf.parameterName}"
+                th:value="${_csrf.token}"/>
+        <table>
+            <tr>
+                <td>Станция отправления:</td>
+                <td>
+                    <input type="search"  minlength = "3" id="mySearch2" th:field="*{sendStationCode}" list="stationsList"/>
+                </td>
+                <td th:if="${#fields.hasErrors('sendStationCode')}" th:errors="*{sendStationCode}">Send station Error</td>
+            </tr>
+            <tr>
+                <td>Станция назначения:</td>
+                <td>
+                    <input type="search"  id="mySearch"  th:field="*{receiveStationCode}" list="stationsList"/>
+
+                    <datalist id="stationsList">
+                        <option th:each="station : ${station_list}"
+                                th:value="${station.getCode()}"
+                                th:text="${station.getRusName()}"></option>
+                    </datalist>
+
+                </td>
+                <td th:if="${#fields.hasErrors('receiveStationCode')}" th:errors="*{receiveStationCode}">Receive station Error</td>
+
+            </tr>
+            <tr>
+                <td>Примечание:</td>
+                <td><input type="text" th:field="*{note}"></td>
+            </tr>
+
+            <!--</tr>-->
+            <tr>
+                <td><button type="submit">Submit</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <header th:replace="layout :: site-footer" />
+
+</body>
+</html>

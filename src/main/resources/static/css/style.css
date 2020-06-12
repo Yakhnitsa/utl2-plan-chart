@@ -1,0 +1,28 @@
+body{
+    font-family: "Calibri";
+    color: goldenrod;
+}
+body > header,footer {
+    font-family: "Calibri";
+    background: #006633;
+    padding: 5px;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+}
+
+body > footer {
+    margin: 10px 0;
+    text-align: right;
+    color: goldenrod;
+}
+/*Table styles */
+/*th{*/
+    /*background: darkturquoise;*/
+/*}*/
+/*th, td {*/
+    /*border: 1px solid black;*/
+/*}*/
+/*tr:nth-child(even) {background-color: #f2f2f2;}*/

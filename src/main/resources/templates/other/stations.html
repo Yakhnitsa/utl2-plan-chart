@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+
+</head>
+<body>
+
+    <header th:replace="layout :: site-header" />
+    <div class="container my-1 ml-3">
+        <h5>Поиск по станциям</h5>
+        <div>
+            <form method="post" th:action="@{/stations}">
+                <!--CSRF protection-->
+                <input
+                type="hidden"
+                th:username="${_csrf.parameterName}"
+                th:value="${_csrf.token}"/>
+
+                <input type="text" name="searchRequest">
+                <button type="submit">Найти</button>
+            </form>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>Код</th>
+                    <th>Название, рус</th>
+                    <th>Название, укр</th>
+                    <th>Администрация</th>
+                    <th>Департамент</th>
+                    <th>Дирекция</th>
+                </tr>
+                <tr th:each="station : ${stations}">
+                    <td th:text="${station.code}"></td>
+                    <td th:text="${station.rusName}"></td>
+                    <td th:text="${station.ukrName}"></td>
+                    <td th:text="${station.administration}"></td>
+                    <td th:text="${station.railDepartment}"></td>
+                    <td th:text="${station.node}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+    <header th:replace="layout :: site-footer" />
+
+</body>
+</html>

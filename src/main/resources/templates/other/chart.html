@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head th:replace="layout :: site-head">
+    <!--<link rel="stylesheet" href=/static/css/style.css th:href="@{/static/css/style.css}"/>-->
+
+</head>
+<body>
+
+    <header th:replace="layout :: site-header" />
+
+    <h3>План-график отгрузки</h3>
+    <div id="chart"></div>
+
+    <script src="/static/js/chart.js"></script>
+
+    <header th:replace="layout :: site-footer" />
+
+</body>
+</html>

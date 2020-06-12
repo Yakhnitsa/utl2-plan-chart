@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+
+</head>
+<body>
+<header th:replace="layout :: site-header" />
+
+    <h1>Страница редактирования пользователя</h1>
+    <form action="/users" method="post">
+        <input type="text" th:value="${user.username}" username="username">
+        <ul>
+            <li th:each="role : ${roles}">
+                <label th:text="${role}">ROLE_USER</label>
+                <input type="checkbox" th:username="${role}" th:value="${role}" th:checked="${user.roles.contains(role)}" />
+            </li>
+        </ul>
+        <!--<div th:each="role: ${roles}">-->
+            <!--</labe ><input type="checkbox" th:username="${role}" th:checked="${user.roles.contains(role)}"><</label>-->
+        <!--</div>-->
+        <input type="hidden" th:value="${user.id}" username="userID">
+        <!--CSRF protection-->
+        <input
+                type="hidden"
+                th:username="${_csrf.parameterName}"
+                th:value="${_csrf.token}" />
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <footer th:replace="layout :: site-footer" />
+</body>
+</html>

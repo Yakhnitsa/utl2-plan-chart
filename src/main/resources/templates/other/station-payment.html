@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <!--<link rel="stylesheet" href=/static/css/style.css th:href="@{/static/css/style.css}"/>-->
+
+</head>
+<body>
+
+    <header th:replace="layout :: site-header" />
+    <div class="container ml-5">
+
+
+        <h4>Рачет ЖД платежей</h4>
+        <!--/*@thymesVar id="stationPaymentForm" type="com.yurets_y.utl2planchart.forms.StationPaymentForm"*/-->
+        <form class="form" th:action="@{/station-payment}"  th:object="${stationPaymentForm}" method="post">
+            <!--CSRF protection-->
+            <input
+                    type="hidden"
+                    th:username="${_csrf?.parameterName}"
+                    th:value="${_csrf?.token}"/>
+
+            <div class="form-group row">
+                <div class="col-sm-2">Тарифный коеффициент</div>
+                <div class="col-sm-2">
+                    <select id="inputState" class="form-control input-sm">
+                        <option selected>3,023</option>
+                        <option>2,302</option>
+                        <option>2,002</option>
+                        <option>...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2">Расстояние подачи-уборки</div>
+                <div class="col-sm-2">
+                    <label for="inOneDay">Баланс ЖД</label>
+                    <input type="number" class="form-control input-sm"
+                           id="inOneDay"
+                           th:field="*{tarifDistUZ}">
+                </div>
+                <div class="col-sm-2">
+                    <label for="inTwoDays">Баланс предприятия</label>
+                    <input type="number" class="form-control input-sm"
+                           id="inTwoDays"
+                           th:field="*{tarifDistClient}">
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4 ml-5 my-2">
+                    <input class="form-check-input" type="checkbox"
+                           th:field="*{tarifDiscount}">
+                    <label class="form-check-label" >
+                        Скидка на подачу-уборку
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Фронт подачи, ваг</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control input-sm"
+                           th:field="*{vagonCount}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Подача уборка</label>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="exampleRadios1" value="option1" checked>
+                        <label class="form-check-label" for="exampleRadios1">
+                            В одни сутки
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="exampleRadios2" value="option2">
+                        <label class="form-check-label" for="exampleRadios2">
+                            В разные сутки
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2">Время маневровой работы</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control input-sm"
+                           th:field="*{shuntingTime}">
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" type="submit">Рассчитать</button>
+        </form>
+
+
+
+    </div>
+
+    <header th:replace="layout :: site-footer" />
+
+</body>
+</html>

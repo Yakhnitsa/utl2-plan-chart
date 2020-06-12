@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <title>UTL-2 Testplace</title>
+    <!-- Vue.js скрипты TODO поменять на версию для пост продакшена
+версия для разработки, отображает полезные предупреждения в консоли -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+</head>
+<body>
+
+    <div id="test">
+        <p> Внешний элемент test, результат поиска станции</p>
+        <station-info :station="foundStation"></station-info>
+        <station-searcher :station.sync="searchedStation" :station-list="stations" v-on:change-station="updateStation($event)"></station-searcher>
+
+    </div>
+
+    <script>
+
+        var stationsApi = Vue.resource('/stations-list');
+
+        var stations = [];
+        {
+            loadStations();
+        }
+
+        //*Компоненты*/
+        Vue.component('station-info',{
+            props:['station','station-list','search'],
+            template:'<div>' +
+            '<p> station info component</p>' +
+            '<p>({{station.code}}) {{station.rusName}}</p>' +
+            '<pre>' +
+            'Search request: {{search}}\n'+
+            'Station rus.name: {{station.rusName}}\n' +
+            'Station ukr.name: {{station.ukrName}}\n' +
+            '</pre>' +
+            '<p> Найденные станции</p>' +
+            '<p v-for="station in stationList">({{station.code}}) {{station.rusName}}</p>' +
+            '</div>'
+
+        });
+
+        Vue.component('station-searcher',
+            {
+                props:['station','station-list'],
+                template:
+                '<div>' +
+                    '<input type="text" list="list" v-model="stationSearch">' +
+                        '<dataList id="list">' +
+                            '<option v-for="station in filteredStations" ' +
+                                'v-bind:value="station.code"> {{station.rusName}}' +
+                            '</option>' +
+                        '</dataList>' +
+                    '<p>Шаблон station-searcher Результат поиска: </p>' +
+                    '<station-info :station="station" :station-list="filteredStations" :search="stationSearch"></station-info>'+
+                '</div>',
+                data: function () {
+                    return {
+                        stationSearch: '',
+                        filteredStations: []
+                    }
+                },
+                computed:{
+
+                },
+                watch:{
+                    stationSearch: function(val){
+                        if(val.length < 3 ) return;
+
+                        var filterArray = this.stationList.filter(station => checkStation(val,station));
+
+                        if(filterArray.length == 1){
+
+                            var foundStation = filterArray[0];
+                            this.$emit('change-station', foundStation);
+                            this.filteredStations = null;
+                            this.stationSearch = this.station.code;
+                        }else if(filterArray.length > 7) return;
+                        else{
+                            this.filteredStations = filterArray;
+                        }
+                    }
+                },
+                methods:{
+                     checkStation: function(patt,station){
+                        var regexp = new RegExp(patt,"i");
+                        console.log('checkstation'+ station);
+                        return regexp.test(station.code) || regexp.test(station.rusName);
+                     }
+
+                }
+            }
+        );
+
+        var test = new Vue({
+            el: '#test',
+            data: {
+                searchedStation:{code:'', rusName:'',ukrName:'',administration:'',railDepartment:'',node:''},
+                foundStation: '',
+                stations: stations
+            },
+            methods:{
+                updateStation(value){
+                    this.foundStation = value;
+                }
+            }
+        });
+
+
+        /*Вспомогательные методы*/
+
+
+        function loadStations(){
+            console.log('Loading stations....');
+            stationsApi.get().then(result =>
+            result.json().then(stationsList =>{
+                stationsList.forEach(station => stations.push(station));
+            }))
+        }
+
+        function checkStation(patt,station){
+            var regexp = new RegExp(patt,"i");
+            return regexp.test(station.code) || regexp.test(station.rusName);
+        }
+    </script>
+
+
+</body>
+</html>
